@@ -5,8 +5,6 @@
 
 #define QTD_PARAMETROS 200
 
-int remover_valor_aleatorio(int * valores, int * qtdValoresDisponiveis);
-
 int main() {
 
     ArvoreAvl * avl = cria_arvore_avl();
@@ -21,20 +19,15 @@ int main() {
     int qtdValoresDisponiveis = QTD_PARAMETROS;
 
     for(i = 0; i < QTD_PARAMETROS; i++) {
-
         // pegando um valor aleatório para inserir
         int indice = rand() % qtdValoresDisponiveis;
-        printf("Indice: %d\n", indice);
         int valor = valores[indice];
 
         // reduzindo a lista de valores possíveis
         valores[indice] = valores[qtdValoresDisponiveis - 1];
         qtdValoresDisponiveis--;
 
-        printf("%d Adicionando %d\n", i, valor);
         adiciona_na_arvore_avl(avl, valor);
-        print_arvore_avl(avl);
-        printf("\n -----------------------\n");
     }
 
     // reiniciando vetor de valores
@@ -42,19 +35,16 @@ int main() {
     qtdValoresDisponiveis = QTD_PARAMETROS;    
 
     for(i = 0; i < QTD_PARAMETROS; i++) {
-
         // pegando um valor aleatório para remover
         int indice = rand() % qtdValoresDisponiveis;
-        printf("Indice: %d\n", indice);
         int valor = valores[indice];
 
         // reduzindo a lista de valores possíveis
         valores[indice] = valores[qtdValoresDisponiveis - 1];
         qtdValoresDisponiveis--;
 
-        printf("%d removendo %d\n", i, valor);
         remove_na_arvore_avl(avl, valor);
-        print_arvore_avl(avl);
-        printf("\n -----------------------\n");
     }
+
+    free(avl);
 }
