@@ -15,6 +15,7 @@ void executar_operacoes(
     void * (*operacao)(void *, int),
     int * valores,
     int (*get_contagem)(),
+    int numero_amostra,
     FILE *arquivo
 );
 
@@ -26,7 +27,7 @@ int main() {
     // criando o arquivo de amostras
     FILE *arquivo;
     arquivo = fopen("amostras.csv", "w+");
-    fprintf(arquivo,"Nome Arvore, Nome operacao, Quantidade Parametros, Valor, Custo Operacao, Custo Total\n");
+    fprintf(arquivo,"Nome Arvore, Nome operacao, Amostra, Quantidade Parametros, Valor, Custo Operacao, Custo Total\n");
 
     int i = 0;
     for (int i; i < QTD_AMOSTRAS; i++)
@@ -37,8 +38,8 @@ int main() {
 
         // executando testes arvore AVL
         ArvoreAvl * avl = cria_arvore_avl();
-        executar_operacoes("AVL", avl, "Insercao", adiciona_na_arvore_avl, valores, get_contagem_insercao_avl, arquivo);
-        executar_operacoes("AVL", avl, "Remocao", remove_na_arvore_avl, valores, get_contagem_remocao_avl, arquivo);
+        executar_operacoes("AVL", avl, "Insercao", adiciona_na_arvore_avl, valores, get_contagem_insercao_avl, i+1, arquivo);
+        executar_operacoes("AVL", avl, "Remocao", remove_na_arvore_avl, valores, get_contagem_remocao_avl, i+1, arquivo);
         free(avl);
 
         // executando testes arvore RedBlack
@@ -91,6 +92,7 @@ void executar_operacoes(
     void * (*operacao)(void *, int),
     int * valores,
     int (*get_contagem)(),
+    int numero_amostra,
     FILE *arquivo
 ) 
 {
@@ -99,6 +101,6 @@ void executar_operacoes(
     for(i = 0; i < QTD_PARAMETROS; i++) {
         operacao(arvore, valores[i]);
         count_operacoes_total += get_contagem();
-        fprintf(arquivo,"%s, %s, %d, %d, %d, %d\n", nomeArvore, nomeOperacao, i, valores[i], get_contagem(), count_operacoes_total);
+        fprintf(arquivo,"%s, %s, %d, %d, %d, %d, %d\n", nomeArvore, nomeOperacao, numero_amostra, i, valores[i], get_contagem(), count_operacoes_total);
     }
 }
