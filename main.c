@@ -3,17 +3,70 @@
 #include <time.h>
 #include "AVL/arvore_avl.h"
 
-#define QTD_PARAMETROS 10
+#define QTD_PARAMETROS 10000
+#define QTD_AMOSTRAS 100
+
+void gerar_valores_aleatorios(int * valores);
+
+void executar_operacoes(
+    char * nomeArvore,
+    void * arvore,
+    char * nomeOperacao,
+    void * (*operacao)(void *, int),
+    int * valores,
+    int (*get_contagem)(),
+    FILE *arquivo
+);
 
 int main() {
-
-    ArvoreAvl * avl = cria_arvore_avl();
 
     // iniciando a semente do rand
     srand(time(NULL));
 
-    // setando um vetor com os valores aleatórios distintos
-    int valores[QTD_PARAMETROS];
+    // criando o arquivo de amostras
+    FILE *arquivo;
+    arquivo = fopen("amostras.csv", "w+");
+    fprintf(arquivo,"Nome Arvore, Nome operacao, Quantidade Parametros, Valor, Custo Operacao, Custo Total\n");
+
+    int i = 0;
+    for (int i; i < QTD_AMOSTRAS; i++)
+    {
+        // setando um vetor com os valores aleatórios distintos
+        int valores[QTD_PARAMETROS];
+        gerar_valores_aleatorios(valores);
+
+        // executando testes arvore AVL
+        ArvoreAvl * avl = cria_arvore_avl();
+        executar_operacoes("AVL", avl, "Insercao", adiciona_na_arvore_avl, valores, get_contagem_insercao_avl, arquivo);
+        executar_operacoes("AVL", avl, "Remocao", remove_na_arvore_avl, valores, get_contagem_remocao_avl, arquivo);
+        free(avl);
+
+        // executando testes arvore RedBlack
+        // RedBlack * rd = cria_arvore_rd();
+        // executar_operacoes("RedBlack", rd, "Insercao", adiciona_na_arvore_rd, valores, get_contagem_insercao_rd, arquivo);
+        // executar_operacoes("RedBlack", rd, "Remocao", remove_na_arvore_rd, valores, get_contagem_remocao_rd, arquivo);
+        // free(rd);
+
+
+        // executando testes arvore B
+        // ArvoreB * ab1 = cria_arvore_b();
+        // executar_operacoes("Arvore B ordem 1", ab1, "Insercao", adiciona_na_arvore_b, valores, get_contagem_insercao_b, arquivo);
+        // executar_operacoes("Arvore B ordem 1", ab1, "Remocao", remove_na_arvore_b, valores, get_contagem_remocao_b, arquivo);
+        // free(ab1);
+        // ArvoreB * ab2 = cria_arvore_b();
+        // executar_operacoes("Arvore B ordem 5", ab2, "Insercao", adiciona_na_arvore_b, valores, get_contagem_insercao_b, arquivo);
+        // executar_operacoes("Arvore B ordem 5", ab2, "Remocao", remove_na_arvore_b, valores, get_contagem_remocao_b, arquivo);
+        // free(ab2);
+        // ArvoreB * ab3 = cria_arvore_b();
+        // executar_operacoes("Arvore B ordem 10", ab3, "Insercao", adiciona_na_arvore_b, valores, get_contagem_insercao_b, arquivo);
+        // executar_operacoes("Arvore B ordem 10", ab3, "Remocao", remove_na_arvore_b, valores, get_contagem_remocao_b, arquivo);
+        // free(ab3);   
+    }
+
+    fclose(arquivo);
+}
+
+void gerar_valores_aleatorios(int * valores) {
     int i;
     for (i = 0; i < QTD_PARAMETROS; i++) {
         int posicaoVetor = 0;
@@ -29,32 +82,23 @@ int main() {
         }
         valores[i] = valor;
     }
+}
 
-    FILE *fpt;
-
-    fpt = fopen("amostras.csv", "w+");
-    fprintf(fpt,"Nome Arvore, Nome operacao, Quantidade Parametros, Valor, Custo Operacao, Custo Total\n");
-
+void executar_operacoes(
+    char * nomeArvore,
+    void * arvore,
+    char * nomeOperacao,
+    void * (*operacao)(void *, int),
+    int * valores,
+    int (*get_contagem)(),
+    FILE *arquivo
+) 
+{
     int count_operacoes_total = 0;
+    int i = 0;
     for(i = 0; i < QTD_PARAMETROS; i++) {
-        adiciona_na_arvore_avl(avl, valores[i]);
-        printf("Inserindo %d\n", valores[i]);
-        printf("Operações: %d\n", get_contagem_insercao_avl());
-        count_operacoes_total += get_contagem_insercao_avl();
-        fprintf(fpt,"AVL, Insercao, %d, %d, %d, %d\n", i, valores[i], get_contagem_insercao_avl(), count_operacoes_total);
-        print_arvore_avl(avl);
+        operacao(arvore, valores[i]);
+        count_operacoes_total += get_contagem();
+        fprintf(arquivo,"%s, %s, %d, %d, %d, %d\n", nomeArvore, nomeOperacao, i, valores[i], get_contagem(), count_operacoes_total);
     }
-
-    count_operacoes_total = 0;
-    for(i = 0; i < QTD_PARAMETROS; i++) {
-        remove_na_arvore_avl(avl, valores[i]);
-        printf("Removendo %d\n", valores[i]);
-        printf("Operações: %d\n", get_contagem_remocao_avl());
-        count_operacoes_total += get_contagem_remocao_avl();
-        fprintf(fpt,"AVL, Remocao, %d, %d, %d, %d\n", i, valores[i], get_contagem_remocao_avl(), count_operacoes_total);
-        print_arvore_avl(avl);
-    }
-
-    fclose(fpt);
-    free(avl);
 }
