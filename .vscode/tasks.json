@@ -9,6 +9,7 @@
                 "-g",
                 "${file}",
                 "/workspaces/avores-comparacao/AVL/arvore_avl.c",
+                "/workspaces/avores-comparacao/RedBlack/RedBlack.c",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
