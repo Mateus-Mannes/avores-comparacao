@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "AVL/arvore_avl.h"
+#include "RedBlack/RedBlack.h"
 
 #define QTD_PARAMETROS 10000
 #define QTD_AMOSTRAS 100
@@ -43,10 +44,10 @@ int main() {
         free(avl);
 
         // executando testes arvore RedBlack
-        // RedBlack * rd = cria_arvore_rd();
-        // executar_operacoes("RedBlack", rd, "Insercao", adiciona_na_arvore_rd, valores, get_contagem_insercao_rd, arquivo);
-        // executar_operacoes("RedBlack", rd, "Remocao", remove_na_arvore_rd, valores, get_contagem_remocao_rd, arquivo);
-        // free(rd);
+        RedBlack * rb = cria_arvore_rb();
+        executar_operacoes("RedBlack", rb, "Insercao", adiciona_na_arvore_rb, valores, get_contagem_insercao_rb, i+1, arquivo);
+        executar_operacoes("RedBlack", rb, "Remocao", remove_na_arvore_rb, valores, get_contagem_remocao_rb, i+1, arquivo);
+        free(rb);
 
 
         // executando testes arvore B
