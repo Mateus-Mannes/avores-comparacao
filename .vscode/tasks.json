@@ -10,6 +10,7 @@
                 "${file}",
                 "/workspaces/avores-comparacao/AVL/arvore_avl.c",
                 "/workspaces/avores-comparacao/RedBlack/RedBlack.c",
+                "/workspaces/avores-comparacao/BTree/BTree.c",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

@@ -3,6 +3,7 @@
 #include <time.h>
 #include "AVL/arvore_avl.h"
 #include "RedBlack/RedBlack.h"
+#include "BTree/BTree.h"
 
 #define QTD_PARAMETROS 10000
 #define QTD_AMOSTRAS 10
@@ -49,20 +50,23 @@ int main() {
         executar_operacoes("RedBlack", rb, "Remocao", remove_na_arvore_rb, valores, get_contagem_remocao_rb, i+1, arquivo);
         free(rb);
 
+        // executando testes arvore B com ordem 1
+        ArvoreB *arvore_ordem_1 = cria_arvore_b(1);
+        executar_operacoes("B-Tree ordem 1", arvore_ordem_1, "Insercao", adiciona_chave_b, valores, get_contagem_insercao_b, i+1, arquivo);
+        executar_operacoes("B-Tree ordem 1", arvore_ordem_1, "Remocao", remove_chave_b, valores, get_contagem_remocao_b, i+1, arquivo);
+        free(arvore_ordem_1);
+        
+        // executando testes arvore B com ordem 5
+        ArvoreB *arvore_ordem_5 = cria_arvore_b(5);
+        executar_operacoes("B-Tree ordem 5", arvore_ordem_5, "Insercao", adiciona_chave_b, valores, get_contagem_insercao_b, i+1, arquivo);
+        executar_operacoes("B-Tree ordem 5", arvore_ordem_5, "Remocao", remove_chave_b, valores, get_contagem_remocao_b, i+1, arquivo);
+        free(arvore_ordem_5);
 
-        // executando testes arvore B
-        // ArvoreB * ab1 = cria_arvore_b();
-        // executar_operacoes("Arvore B ordem 1", ab1, "Insercao", adiciona_na_arvore_b, valores, get_contagem_insercao_b, arquivo);
-        // executar_operacoes("Arvore B ordem 1", ab1, "Remocao", remove_na_arvore_b, valores, get_contagem_remocao_b, arquivo);
-        // free(ab1);
-        // ArvoreB * ab2 = cria_arvore_b();
-        // executar_operacoes("Arvore B ordem 5", ab2, "Insercao", adiciona_na_arvore_b, valores, get_contagem_insercao_b, arquivo);
-        // executar_operacoes("Arvore B ordem 5", ab2, "Remocao", remove_na_arvore_b, valores, get_contagem_remocao_b, arquivo);
-        // free(ab2);
-        // ArvoreB * ab3 = cria_arvore_b();
-        // executar_operacoes("Arvore B ordem 10", ab3, "Insercao", adiciona_na_arvore_b, valores, get_contagem_insercao_b, arquivo);
-        // executar_operacoes("Arvore B ordem 10", ab3, "Remocao", remove_na_arvore_b, valores, get_contagem_remocao_b, arquivo);
-        // free(ab3);   
+        // executando testes arvore B com ordem 10
+        ArvoreB *arvore_ordem_10 = cria_arvore_b(10);
+        executar_operacoes("B-Tree ordem 10", arvore_ordem_10, "Insercao", adiciona_chave_b, valores, get_contagem_insercao_b, i+1, arquivo);
+        executar_operacoes("B-Tree ordem 10", arvore_ordem_10, "Remocao", remove_chave_b, valores, get_contagem_remocao_b, i+1, arquivo);
+        free(arvore_ordem_10);   
     }
 
     fclose(arquivo);
