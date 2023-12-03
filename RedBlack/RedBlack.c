@@ -2,24 +2,24 @@
 #include <stdio.h>
 #include "RedBlack.h"
 
-enum coloracao { Vermelho, Preto };
-typedef enum coloracao Cor;
-
 int vazia(RedBlack* arvore);
 No* criarNo(RedBlack* arvore, No* pai, int valor);
 No* adicionarNo(RedBlack* arvore, No* no, int valor);
 No* localizar(RedBlack* arvore, int valor);
 void balancear(RedBlack* arvore, No* no);
-void rotacionarEsquerda(RedBlack* arvore, No* no, int* contagem);
-void rotacionarDireita(RedBlack* arvore, No* no, int* contagem);
+void rotacionarEsquerda(RedBlack* arvore, No* no, unsigned long int* contagem);
+void rotacionarDireita(RedBlack* arvore, No* no, unsigned long int* contagem);
 No* sucessor(RedBlack* arvore, No* no);
 void balancearRemocao(RedBlack* arvore, No* no);
 
-int get_contagem_insercao_rb() {
+unsigned long int contagem_insercao_rb = 0;
+unsigned long int contagem_remocao_rb = 0;
+
+unsigned long int get_contagem_insercao_rb() {
   return contagem_insercao_rb;
 }
 
-int get_contagem_remocao_rb() {
+unsigned long int get_contagem_remocao_rb() {
   return contagem_remocao_rb;
 }
 
@@ -188,7 +188,7 @@ void balancear(RedBlack* arvore, No* no) {
   arvore->raiz->cor = Preto; //Conserta possível quebra regra 2
 }
 
-void rotacionarEsquerda(RedBlack* arvore, No* no, int* contagem) {
+void rotacionarEsquerda(RedBlack* arvore, No* no, unsigned long int* contagem) {
   No* direita = no->direita;
   no->direita = direita->esquerda; 
 
@@ -214,7 +214,7 @@ void rotacionarEsquerda(RedBlack* arvore, No* no, int* contagem) {
   no->pai = direita;
 }
 
-void rotacionarDireita(RedBlack* arvore, No* no, int* contagem) {
+void rotacionarDireita(RedBlack* arvore, No* no, unsigned long int* contagem) {
   No* esquerda = no->esquerda;
   no->esquerda = esquerda->direita;
   

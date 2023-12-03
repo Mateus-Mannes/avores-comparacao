@@ -12,12 +12,12 @@ typedef struct arvore_avl
     struct no_avl *raiz;
 } ArvoreAvl;
 
-int contagem_insercao_avl;
-int contagem_remocao_avl;
+unsigned long int contagem_insercao_avl;
+unsigned long int contagem_remocao_avl;
 
-int get_contagem_insercao_avl();
+unsigned long int get_contagem_insercao_avl();
 
-int get_contagem_remocao_avl();
+unsigned long int get_contagem_remocao_avl();
 
 ArvoreAvl* cria_arvore_avl();
 

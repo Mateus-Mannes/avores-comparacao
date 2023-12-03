@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "AVL/arvore_avl.h"
-#include "RedBlack/RedBlack.h"
+#include "arvore_avl.h"
+#include "RedBlack.h"
 
 #define QTD_PARAMETROS 10000
-#define QTD_AMOSTRAS 100
+#define QTD_AMOSTRAS 10
 
 void gerar_valores_aleatorios(int * valores);
 
@@ -15,7 +15,7 @@ void executar_operacoes(
     char * nomeOperacao,
     void * (*operacao)(void *, int),
     int * valores,
-    int (*get_contagem)(),
+    unsigned long int (*get_contagem)(),
     int numero_amostra,
     FILE *arquivo
 );
@@ -30,8 +30,8 @@ int main() {
     arquivo = fopen("amostras.csv", "w+");
     fprintf(arquivo,"Nome Arvore, Nome operacao, Amostra, Quantidade Parametros, Valor, Custo Operacao, Custo Total\n");
 
-    int i = 0;
-    for (int i; i < QTD_AMOSTRAS; i++)
+    int i=0;
+    for (i=0; i < QTD_AMOSTRAS; i++)
     {
         // setando um vetor com os valores aleatórios distintos
         int valores[QTD_PARAMETROS];
@@ -92,16 +92,16 @@ void executar_operacoes(
     char * nomeOperacao,
     void * (*operacao)(void *, int),
     int * valores,
-    int (*get_contagem)(),
+    unsigned long int (*get_contagem)(),
     int numero_amostra,
     FILE *arquivo
 ) 
 {
-    int count_operacoes_total = 0;
+    unsigned long int count_operacoes_total = 0;
     int i = 0;
     for(i = 0; i < QTD_PARAMETROS; i++) {
         operacao(arvore, valores[i]);
         count_operacoes_total += get_contagem();
-        fprintf(arquivo,"%s, %s, %d, %d, %d, %d, %d\n", nomeArvore, nomeOperacao, numero_amostra, i, valores[i], get_contagem(), count_operacoes_total);
+        fprintf(arquivo, "%s, %s, %d, %d, %d, %lu, %lu\n", nomeArvore, nomeOperacao, numero_amostra, i, valores[i], get_contagem(), count_operacoes_total);
     }
 }

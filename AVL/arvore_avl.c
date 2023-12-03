@@ -12,11 +12,11 @@ NoAvl *rsd(NoAvl *no, ArvoreAvl * arvore);
 NoAvl* rde(NoAvl* no, ArvoreAvl * arvore);
 NoAvl* rdd(NoAvl* no, ArvoreAvl * arvore);
 
-int get_contagem_insercao_avl() {
+unsigned long int get_contagem_insercao_avl() {
     return contagem_insercao_avl;
 }
 
-int get_contagem_remocao_avl() {
+unsigned long int get_contagem_remocao_avl() {
     return contagem_remocao_avl;
 }
 
