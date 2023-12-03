@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "arvore_avl.h"
-#include "RedBlack.h"
+#include "AVL/arvore_avl.h"
+#include "RedBlack/RedBlack.h"
 
 #define QTD_PARAMETROS 10000
 #define QTD_AMOSTRAS 10
