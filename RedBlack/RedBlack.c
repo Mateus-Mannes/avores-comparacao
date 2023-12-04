@@ -11,9 +11,11 @@ void rotacionarEsquerda(RedBlack* arvore, No* no, unsigned long int* contagem);
 void rotacionarDireita(RedBlack* arvore, No* no, unsigned long int* contagem);
 No* sucessor(RedBlack* arvore, No* no);
 void balancearRemocao(RedBlack* arvore, No* no);
+void remove_na_arvore_rb_recursivo(RedBlack* arvore, int valor);
+No* adiciona_na_arvore_rb_recursivo(RedBlack* arvore, int valor);
 
-unsigned long int contagem_insercao_rb = 0;
-unsigned long int contagem_remocao_rb = 0;
+unsigned long int contagem_insercao_rb;
+unsigned long int contagem_remocao_rb;
 
 unsigned long int get_contagem_insercao_rb() {
   return contagem_insercao_rb;
@@ -21,6 +23,15 @@ unsigned long int get_contagem_insercao_rb() {
 
 unsigned long int get_contagem_remocao_rb() {
   return contagem_remocao_rb;
+}
+
+No* adiciona_na_arvore_rb(RedBlack* arvore, int valor){
+  contagem_insercao_rb = 0;
+  return adiciona_na_arvore_rb_recursivo(arvore, valor);
+}
+void remove_na_arvore_rb(RedBlack* arvore, int valor){
+  contagem_remocao_rb = 0;
+  return remove_na_arvore_rb_recursivo(arvore, valor);
 }
 
 RedBlack* cria_arvore_rb() {
@@ -74,7 +85,7 @@ No* adicionarNo(RedBlack* arvore, No* no, int valor) {
   }
 }
 
-No* adiciona_na_arvore_rb(RedBlack* arvore, int valor) {
+No* adiciona_na_arvore_rb_recursivo(RedBlack* arvore, int valor) {
   contagem_insercao_rb++;
   if (vazia(arvore)) {
     arvore->raiz = criarNo(arvore, arvore->nulo, valor);
@@ -106,35 +117,6 @@ No* localizar(RedBlack* arvore, int valor) {
   }
 
   return NULL;
-}
-/*
-void percorrerProfundidadeInOrder(Arvore* arvore, No* no, void (*callback)(int)) {
-  if (no != arvore->nulo) {     
-    percorrerProfundidadeInOrder(arvore, no->esquerda,callback);
-    callback(no->valor);
-    percorrerProfundidadeInOrder(arvore, no->direita,callback);
-  }
-}
-
-void percorrerProfundidadePreOrder(Arvore* arvore, No* no, void (*callback)(int)) {
-  if (no != arvore->nulo) {
-    callback(no->valor);
-    percorrerProfundidadePreOrder(arvore, no->esquerda,callback);
-    percorrerProfundidadePreOrder(arvore, no->direita,callback);
-  }
-}
-
-void percorrerProfundidadePosOrder(Arvore* arvore, No* no, void (callback)(int)) {
-  if (no != arvore->nulo) {
-    percorrerProfundidadePosOrder(arvore, no->esquerda,callback);
-    percorrerProfundidadePosOrder(arvore, no->direita,callback);
-    callback(no->valor);
-  }
-}
-*/
-
-void visitar(int valor){
-  printf("%d ", valor);
 }
 
 void balancear(RedBlack* arvore, No* no) {
@@ -240,7 +222,7 @@ void rotacionarDireita(RedBlack* arvore, No* no, unsigned long int* contagem) {
   no->pai = esquerda;
 }
 
-void remove_na_arvore_rb(RedBlack* arvore, int valor) {
+void remove_na_arvore_rb_recursivo(RedBlack* arvore, int valor) {
   No* no = localizar(arvore, valor);
   
   contagem_remocao_rb++;
@@ -291,7 +273,6 @@ void remove_na_arvore_rb(RedBlack* arvore, int valor) {
   }
 }
 
-// Função para encontrar o sucessor de um nó na árvore
 No* sucessor(RedBlack* arvore, No* no) {
   no = no->direita;
 
@@ -304,7 +285,6 @@ No* sucessor(RedBlack* arvore, No* no) {
   return no;
 }
 
-// Função para balancear a árvore após a remoção
 void balancearRemocao(RedBlack* arvore, No* no) {
   while (no != arvore->raiz && no->cor == Preto) {
     contagem_remocao_rb+=2;
